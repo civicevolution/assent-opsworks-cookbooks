@@ -226,6 +226,8 @@ when 'rhel', 'fedora', 'suse'
 
 end
 
+default['postgresql']['config'].delete('unix_socket_directory')
+
 default['postgresql']['config']['unix_socket_directories'] = '/var/run/postgresql'
 
 Chef::Log.debug("\n\n&&&&&: default['postgresql']['config']['unix_socket_directory']: #{ default['postgresql']['config']['unix_socket_directory'] }")
