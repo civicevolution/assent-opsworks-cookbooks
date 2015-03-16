@@ -32,11 +32,11 @@ describe 'postgresql::server' do
   it 'can connect to postgresql' do
     require 'pg'
     conn = PG::Connection.new(
-        :host => 'localhost',
-        :port => '5432',
-        :password => node['postgresql']['password']['postgres'],
-        :user => "postgres"
-    )
+                               :host => 'localhost',
+                               :port => '5432',
+                               :password => node['postgresql']['password']['postgres'],
+                               :user => "postgres"
+                             )
     assert_match(/localhost/, conn.host)
   end
 

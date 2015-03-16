@@ -1,8 +1,6 @@
 #
-# Cookbook Name:: postgresql_test
-# Recipe:: default
-#
-# Copyright 2012, Opscode, Inc.
+# Cookbook Name:: postgresql
+# Recipe:: server
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,12 +15,20 @@
 # limitations under the License.
 #
 
-require File.expand_path('../support/helpers', __FILE__)
+change_notify = node['postgresql']['server']['config_change_notify']
 
-describe 'postgresql::ruby' do
-  include Helpers::Postgresql
+template "#{node['postgresql']['dir']}/postgresql.conf" do
+  source "postgresql.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode 0600
+  notifies change_notify, 'service[postgresql]', :delayed
+end
 
-  it 'installs the pg gem in Chefs ruby environment' do
-    assert Gem::Specification.all_names.grep("pg-.*")
-  end
+template "#{node['postgresql']['dir']}/pg_hba.conf" do
+  source "pg_hba.conf.erb"
+  owner "postgres"
+  group "postgres"
+  mode 00600
+  notifies change_notify, 'service[postgresql]', :delayed
 end
