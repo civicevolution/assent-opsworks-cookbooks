@@ -8,7 +8,7 @@
 
 # redis is on the same machine as db
 
-app_name = "ce2_ver_1" # get this from stack json
+app_name = "assent_prod" # get this from stack json
 faye_directory = '/opt/faye'
 faye_server = "#{faye_directory}/server-redis.js"
 faye_port = 8000
