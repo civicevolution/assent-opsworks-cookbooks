@@ -153,6 +153,22 @@ else
   default['postgresql']['server']['service_name'] = "postgresql"
 end
 
+
+
+
+Chef::Log.debug("default['postgresql']['version']: #{ default['postgresql']['version'] }")
+Chef::Log.debug("default['postgresql']['dir']: #{ default['postgresql']['dir'] }")
+Chef::Log.debug("default['postgresql']['version']: #{ default['postgresql']['version'] }")
+Chef::Log.debug("default['postgresql']['dir']: #{ default['postgresql']['dir'] }")
+Chef::Log.debug("default['postgresql']['client']['packages']: #{ default['postgresql']['client']['packages'] }")
+Chef::Log.debug("default['postgresql']['server']['packages']: #{ default['postgresql']['server']['packages'] }")
+Chef::Log.debug("default['postgresql']['contrib']['packages']: #{ default['postgresql']['contrib']['packages'] }")
+Chef::Log.debug("default['postgresql']['server']['service_name']: #{ default['postgresql']['server']['service_name'] }")
+
+
+
+
+
 # These defaults have disparity between which postgresql configuration
 # settings are used because they were extracted from the original
 # configuration files that are now removed in favor of dynamic
