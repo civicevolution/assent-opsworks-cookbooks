@@ -94,7 +94,8 @@ template "/etc/init/faye.conf" do
                 :faye_user => faye_user,
                 :node_path => node_path,
                 :faye_server => faye_server,
-                :faye_log_with_path => faye_log_with_path
+                :faye_log_directory => faye_log_directory,
+                :faye_log_name => faye_log_name
             })
 end
 
