@@ -89,7 +89,7 @@ when "amazon"
 
   if node['platform_version'].to_f >= 2012.03
     default['postgresql']['version'] = "9.3"
-    default['postgresql']['dir'] = "/var/lib/pgsql9/data"
+    default['postgresql']['dir'] = "/var/lib/pgsql93/data"
   else
     default['postgresql']['version'] = "8.4"
     default['postgresql']['dir'] = "/var/lib/pgsql/data"
