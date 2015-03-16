@@ -31,7 +31,7 @@ end
 user "postgres" do
   shell "/bin/bash"
   comment "PostgreSQL Server"
-  home "/var/lib/pgsql93"
+  home "/var/lib/pgsql9"
   gid "postgres"
   system true
   uid 26
@@ -46,8 +46,6 @@ directory dir do
 end
 
 node['postgresql']['server']['packages'].each do |pg_pack|
-
-  Chef::Log.debug("\n\nZZZZZZ: pg_pack: #{ pg_pack }\n\n")
 
   package pg_pack
 

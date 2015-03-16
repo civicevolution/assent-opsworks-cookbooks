@@ -30,9 +30,6 @@
 
 repo_rpm_url, repo_rpm_filename, repo_rpm_package = pgdgrepo_rpm_info
 
-Chef::Log.debug("\n\nXXXXX: repo_rpm_filename: #{ repo_rpm_filename }\n\n")
-
-
 # Download the PGDG repository RPM as a local file
 remote_file "#{Chef::Config[:file_cache_path]}/#{repo_rpm_filename}" do
   source repo_rpm_url

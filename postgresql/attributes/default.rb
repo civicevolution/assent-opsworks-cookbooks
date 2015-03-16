@@ -22,10 +22,6 @@ default['postgresql']['assign_postgres_password'] = true
 # Establish default database name
 default['postgresql']['database_name'] = 'template1'
 
-
-Chef::Log.debug("%%%%%%% postgresql/attributes/default.rb  node['platform']: #{node['platform']}")
-Chef::Log.debug("%%%%%%% postgresql/attributes/default.rb  node['platform_version']: #{node['platform_version']}")
-
 case node['platform']
 when "debian"
 
@@ -92,17 +88,17 @@ when "fedora"
 when "amazon"
 
   if node['platform_version'].to_f >= 2012.03
-    default['postgresql']['version'] = "9.0"
-    default['postgresql']['dir'] = "/var/lib/pgsql93/data"
+    default['postgresql']['version'] = "9.4"
+    default['postgresql']['dir'] = "/var/lib/pgsql9/data"
   else
     default['postgresql']['version'] = "8.4"
     default['postgresql']['dir'] = "/var/lib/pgsql/data"
   end
 
-  default['postgresql']['client']['packages'] = %w{postgresql93-devel}
-  default['postgresql']['server']['packages'] = %w{postgresql93-server}
-  default['postgresql']['contrib']['packages'] = %w{postgresql93-contrib}
-  default['postgresql']['server']['service_name'] = "postgresql93"
+  default['postgresql']['client']['packages'] = %w{postgresql94-devel}
+  default['postgresql']['server']['packages'] = %w{postgresql94-server}
+  default['postgresql']['contrib']['packages'] = %w{postgresql94-contrib}
+  default['postgresql']['server']['service_name'] = "postgresql9"
 
 when "redhat", "centos", "scientific", "oracle"
 
@@ -153,22 +149,6 @@ else
   default['postgresql']['server']['service_name'] = "postgresql"
 end
 
-
-
-
-Chef::Log.debug("default['postgresql']['version']: #{ default['postgresql']['version'] }")
-Chef::Log.debug("default['postgresql']['dir']: #{ default['postgresql']['dir'] }")
-Chef::Log.debug("default['postgresql']['version']: #{ default['postgresql']['version'] }")
-Chef::Log.debug("default['postgresql']['dir']: #{ default['postgresql']['dir'] }")
-Chef::Log.debug("default['postgresql']['client']['packages']: #{ default['postgresql']['client']['packages'] }")
-Chef::Log.debug("default['postgresql']['server']['packages']: #{ default['postgresql']['server']['packages'] }")
-Chef::Log.debug("default['postgresql']['contrib']['packages']: #{ default['postgresql']['contrib']['packages'] }")
-Chef::Log.debug("default['postgresql']['server']['service_name']: #{ default['postgresql']['server']['service_name'] }")
-
-
-
-
-
 # These defaults have disparity between which postgresql configuration
 # settings are used because they were extracted from the original
 # configuration files that are now removed in favor of dynamic
@@ -181,9 +161,6 @@ Chef::Log.debug("default['postgresql']['server']['service_name']: #{ default['po
 #
 # The ssl config attribute is generated in the recipe to avoid awkward
 # merge/precedence order during the Chef run.
-
-Chef::Log.debug("YYYY: node['platform_family']: #{ node['platform_family'] }")
-
 case node['platform_family']
 when 'debian'
   default['postgresql']['config']['data_directory'] = "/var/lib/postgresql/#{node['postgresql']['version']}/main"
@@ -221,16 +198,10 @@ when 'rhel', 'fedora', 'suse'
   default['postgresql']['config']['lc_numeric'] = 'en_US.UTF-8'
   default['postgresql']['config']['lc_time'] = 'en_US.UTF-8'
   default['postgresql']['config']['default_text_search_config'] = 'pg_catalog.english'
-  # default['postgresql']['config']['unix_socket_directory'] = '/var/run/postgresql' if node['postgresql']['version'].to_f < 9.3
-  # default['postgresql']['config']['unix_socket_directories'] = '/var/run/postgresql' if node['postgresql']['version'].to_f >= 9.3
-
 end
 
 default['postgresql']['config']['unix_socket_directories'] = '/var/run/postgresql'
 default['postgresql']['config']['unix_socket_directory'] = nil
-
-Chef::Log.debug("\n\n&&&&&: default['postgresql']['config']['unix_socket_directory']: #{ default['postgresql']['config']['unix_socket_directory'] }")
-Chef::Log.debug("\n\n&&&&&: default['postgresql']['config']['unix_socket_directories']: #{ default['postgresql']['config']['unix_socket_directories'] }")
 
 default['postgresql']['pg_hba'] = [
   {:type => 'local', :db => 'all', :user => 'postgres', :addr => nil, :method => 'ident'},
