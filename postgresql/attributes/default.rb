@@ -221,8 +221,8 @@ when 'rhel', 'fedora', 'suse'
   default['postgresql']['config']['lc_numeric'] = 'en_US.UTF-8'
   default['postgresql']['config']['lc_time'] = 'en_US.UTF-8'
   default['postgresql']['config']['default_text_search_config'] = 'pg_catalog.english'
-  default['postgresql']['config']['unix_socket_directory'] = '/var/run/postgresql' if node['postgresql']['version'].to_f < 9.3
-  default['postgresql']['config']['unix_socket_directories'] = '/var/run/postgresql' if node['postgresql']['version'].to_f >= 9.3
+  # default['postgresql']['config']['unix_socket_directory'] = '/var/run/postgresql' if node['postgresql']['version'].to_f < 9.3
+  # default['postgresql']['config']['unix_socket_directories'] = '/var/run/postgresql' if node['postgresql']['version'].to_f >= 9.3
 
 end
 
