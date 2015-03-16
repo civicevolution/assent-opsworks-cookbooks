@@ -181,6 +181,9 @@ Chef::Log.debug("default['postgresql']['server']['service_name']: #{ default['po
 #
 # The ssl config attribute is generated in the recipe to avoid awkward
 # merge/precedence order during the Chef run.
+
+Chef::Log.debug("YYYY: node['platform_family']: #{ node['platform_family'] }")
+
 case node['platform_family']
 when 'debian'
   default['postgresql']['config']['data_directory'] = "/var/lib/postgresql/#{node['postgresql']['version']}/main"
@@ -219,6 +222,10 @@ when 'rhel', 'fedora', 'suse'
   default['postgresql']['config']['lc_time'] = 'en_US.UTF-8'
   default['postgresql']['config']['default_text_search_config'] = 'pg_catalog.english'
 end
+
+
+Chef::Log.debug("\n\n&&&&&: default['postgresql']['config']['unix_socket_directory']: #{ default['postgresql']['config']['unix_socket_directory'] }")
+Chef::Log.debug("\n\n&&&&&: default['postgresql']['config']['unix_socket_directories']: #{ default['postgresql']['config']['unix_socket_directories'] }")
 
 default['postgresql']['pg_hba'] = [
   {:type => 'local', :db => 'all', :user => 'postgres', :addr => nil, :method => 'ident'},
