@@ -17,8 +17,18 @@ redis_port = 6379
 
 faye_user = 'deploy'
 node_path = "/usr/local/bin/node"
-faye_log_with_path = "/srv/www/#{app_name}/shared/log/faye-server-redis.log"
+#faye_log_with_path = "/srv/www/#{app_name}/shared/log/faye-server-redis.log"
+faye_log_directory = "/var/log/faye-server-redis"
+faye_log_name = "access.log"
 
+
+directory faye_log_directory do
+  recursive true
+  owner "deploy"
+  group "nobody"
+  mode 0755
+  not_if { ::File.directory?(faye_log_directory) }
+end
 
 #pid_directory = '/var/run/faye'
 #pid_file = '/var/run/faye/faye.pid'
