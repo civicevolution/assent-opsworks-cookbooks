@@ -22,6 +22,10 @@ default['postgresql']['assign_postgres_password'] = true
 # Establish default database name
 default['postgresql']['database_name'] = 'template1'
 
+
+Chef::Log.debug("%%%%%%% postgresql/attributes/default.rb  node['platform']: #{node['platform']}")
+Chef::Log.debug("%%%%%%% postgresql/attributes/default.rb  node['platform_version']: #{node['platform_version']}")
+
 case node['platform']
 when "debian"
 
