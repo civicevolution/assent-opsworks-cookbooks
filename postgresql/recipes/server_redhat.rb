@@ -47,6 +47,8 @@ end
 
 node['postgresql']['server']['packages'].each do |pg_pack|
 
+  Chef::Log.debug("\n\nZZZZZZ: pg_pack: #{ pg_pack }\n\n")
+
   package pg_pack
 
 end
