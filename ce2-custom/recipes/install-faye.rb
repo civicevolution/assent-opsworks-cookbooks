@@ -47,12 +47,12 @@ end
 nodejs_npm "faye" do
   #version "1.0.1"
   path faye_directory
-  action :install_local
+  action :install
 end
 
 nodejs_npm "faye-redis" do
   path faye_directory
-  action :install_local
+  action :install
 end
 
 
