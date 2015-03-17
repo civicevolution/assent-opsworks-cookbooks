@@ -44,13 +44,13 @@ end
 #
 # Install Faye
 
-npm_package "faye" do
+nodejs_npm "faye" do
   #version "1.0.1"
   path faye_directory
   action :install_local
 end
 
-npm_package "faye-redis" do
+nodejs_npm "faye-redis" do
   path faye_directory
   action :install_local
 end
