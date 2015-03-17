@@ -7,7 +7,9 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version "0.0.1"
 recipe "ce2-custom::init-db", "DB initialization"
 
-depends "npm"
+#depends "npm"
+# could use this instead
+# depends "nodejs::npm"
 #depends "openssl"
 #depends "database"
 #depends "postgresql"
