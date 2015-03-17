@@ -25,7 +25,7 @@ directory faye_log_directory do
   recursive true
   owner "deploy"
   group "nobody"
-  mode 0777
+  mode 0755
   not_if { ::File.directory?(faye_log_directory) }
 end
 
