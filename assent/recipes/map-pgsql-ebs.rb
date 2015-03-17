@@ -1,6 +1,13 @@
+
+Chef::Log.info "check for the mount_point   #{}"
 mount_point = node['ebs']['raids']['/dev/md0']['mount_point'] rescue nil
 
+
+Chef::Log.info "the mount_point IS   #{mount_point}"
+
+
 if mount_point
+  Chef::Log.info "Inside if mount_point with   #{mount_point}"
   directory "#{mount_point}/pgsql" do
     owner deploy[:user]
     group deploy[:group]
