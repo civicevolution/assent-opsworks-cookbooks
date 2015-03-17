@@ -1,5 +1,6 @@
 
-Chef::Log.info "check for the mount_point   #{}"
+Chef::Log.info "do pretty print on node  #{}"
+Chef::Log.info "check for the mount_point node:  #{ JSON.pretty_generate(node) }"
 mount_point = node['ebs']['raids']['/dev/md0']['mount_point'] rescue nil
 
 
