@@ -9,7 +9,7 @@ recipe "ce2-custom::init-db", "DB initialization"
 
 #depends "npm"
 # could use this instead
-# depends "nodejs::npm"
+depends "nodejs"
 #depends "openssl"
 #depends "database"
 #depends "postgresql"
