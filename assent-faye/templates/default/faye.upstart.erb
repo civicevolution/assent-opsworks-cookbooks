@@ -1,0 +1,31 @@
+description "Faye Node.js"
+author "brian@civicevolution.org"
+
+# start when filesystem is mounted networking is up
+start on (filesystem and net-device-up IFACE!=lo)
+# stop on shutting down the system
+stop on runlevel [016]
+
+# application environment
+# staging and development instances should use hardened-nodejs.override to define environment
+env NODE_ENV=production
+
+# respawn the job up to 10 times within a 5 second period.
+# If the job exceeds these values, it will be stopped and marked as failed.
+respawn
+respawn limit 10 5
+
+script
+cd /opt/faye
+exec sudo -u <%= @faye_user %> NODE_ENV=production <%= @node_path %> <%= @faye_server %> >> <%= @faye_log_directory%>/<%= @faye_log_name  %> 2>&1
+end script
+
+pre-start script
+# Date format same as (new Date()).toISOString() for consistency
+echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Starting" >> <%= @faye_log_directory%>/<%= @faye_log_name  %> 2>&1
+end script
+
+pre-stop script
+rm /var/run/yourprogram.pid
+echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >> <%= @faye_log_directory%>/<%= @faye_log_name  %> 2>&1
+end script
