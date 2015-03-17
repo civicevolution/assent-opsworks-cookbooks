@@ -7,4 +7,4 @@ cookbook 'ulimit'
 cookbook 'redisio'
 cookbook 'postgresql'
 cookbook 'chef-sugar'
-cookbook 'nodejs'          `
+cookbook 'nodejs'
