@@ -17,6 +17,17 @@ redis_port = 6379
 
 faye_user = 'deploy'
 node_path = "/usr/local/bin/node"
+faye_log_directory = "/var/log/faye-server-redis"
+faye_log_name = "access.log"
+
+
+directory faye_log_directory do
+  recursive true
+  owner "deploy"
+  group "nobody"
+  mode 0777
+  not_if { ::File.directory?(faye_log_directory) }
+end
 
 
 #pid_directory = '/var/run/faye'
@@ -82,7 +93,9 @@ template "/etc/init/faye.conf" do
   variables({
                 :faye_user => faye_user,
                 :node_path => node_path,
-                :faye_server => faye_server
+                :faye_server => faye_server,
+                :faye_log_directory => faye_log_directory,
+                :faye_log_name => faye_log_name
             })
 end
 
