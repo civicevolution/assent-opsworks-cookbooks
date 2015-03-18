@@ -6,7 +6,6 @@ serverName = "getAssent.com getAssent"
 accessLog = "/var/log/nginx/getassent.log"
 rootPath = "/srv/www/getassent/current/public/"
 
-# Run from upstart script
 template "/etc/nginx/sites-available/nginx-nodejs.conf" do
   source "nginx-nodejs.conf.erb"
   owner "nginx"
@@ -18,6 +17,13 @@ template "/etc/nginx/sites-available/nginx-nodejs.conf" do
                 :accessLog => accessLog,
                 :rootPath => rootPath
             })
+end
+
+template "/srv/www/getassent/current/public/index.html" do
+  source "index.html.erb"
+  owner "nginx"
+  group "nginx"
+  mode 0644
 end
 
 link "nginx-nodejs.conf" do
