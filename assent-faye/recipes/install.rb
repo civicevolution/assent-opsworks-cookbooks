@@ -55,15 +55,20 @@ end
 #
 # Install Faye
 
+npmlist  = `npm list --depth=0`
+
 nodejs_npm "faye" do
-  #version "1.0.1"
+  cwd  faye_directory
   path faye_directory
   action :install
+  not_if { npmlist =~ /faye@/ }
 end
 
 nodejs_npm "faye-redis" do
+  cwd  faye_directory
   path faye_directory
   action :install
+  not_if { npmlist =~ /faye-redis@/ }
 end
 
 
