@@ -20,12 +20,13 @@ template "/etc/nginx/sites-available/nginx-nodejs.conf" do
             })
 end
 
-#link "/etc/nginx/sites-enabled/nginx-nodejs.conf" do
-#  to "/etc/nginx/sites-available/nginx-nodejs.conf"
-#  owner "nginx"
-#  group "nginx"
-#  not_if { ::File.exists("/etc/nginx/sites-enabled/nginx-nodejs.conf") }
-#end
+link "nginx-nodejs.conf" do
+  target_file "/etc/nginx/sites-enabled/nginx-nodejs.conf"
+  to          "/etc/nginx/sites-available/nginx-nodejs.conf"
+  owner       "nginx"
+  group       "nginx"
+  not_if { ::File.exists("/etc/nginx/sites-enabled/nginx-nodejs.conf") }
+end
 
 # restart nginx
 #execute "Start faye" do
