@@ -1,10 +1,10 @@
 apps = [
-  { name: 'faye', port: 8000, keepalive: 32 },
+  { name: 'faye', port: 8001, keepalive: 32 },
   { name: 'api', port: 9001, keepalive: 32 }
 ]
 serverName = "getAssent.com getAssent"
 accessLog = "/var/log/nginx/getassent.log"
-root = "/srv/www/getassent/current/public/"
+rootPath = "/srv/www/getassent/current/public/"
 
 # Run from upstart script
 template "/etc/nginx/sites-available/nginx-nodejs.conf" do
@@ -16,7 +16,7 @@ template "/etc/nginx/sites-available/nginx-nodejs.conf" do
                 :apps => apps,
                 :serverName => serverName,
                 :accessLog => accessLog,
-                :root => root
+                :rootPath => rootPath
             })
 end
 

@@ -14,7 +14,7 @@ server {
 
   keepalive_timeout 5;
 
-  root ;
+  root <%= @rootPath %>;
   index index.html;
 
   <% @apps.each do |app| -%>
