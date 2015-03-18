@@ -25,7 +25,7 @@ link "nginx-nodejs.conf" do
   to          "/etc/nginx/sites-available/nginx-nodejs.conf"
   owner       "nginx"
   group       "nginx"
-  not_if { ::File.exists("/etc/nginx/sites-enabled/nginx-nodejs.conf") }
+  not_if { ::File.exists?("/etc/nginx/sites-enabled/nginx-nodejs.conf") }
 end
 
 # restart nginx
@@ -34,7 +34,7 @@ end
 #  not_if("ps aux | grep faye/server-redis.js | grep -v grep | grep -v sudo")
 #end
 
-#service 'nginx' do
-#  supports :status => true, :restart => true, :reload => true
-#  action :restart
-#end
+service 'nginx' do
+  supports :status => true, :restart => true, :reload => true
+  action :restart
+end
