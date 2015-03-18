@@ -1,23 +1,39 @@
-log "^^^^^^ Feb 5 14:16 custom recipe ce2-custom::create-database-yml"
+apps = [
+  { name: 'faye', port: 8000, keepalive: 32 },
+  { name: 'api', port: 90001, keepalive: 32 }
+]
+serverName = "getAssent.com getAssent"
+accessLog = "/var/log/nginx/getassent.log"
+root = "/srv/www/getassent/current/public/"
 
-node[:deploy].each do |application, deploy|
+# Run from upstart script
+template "/etc/nginx/sites-available/nginx-nodejs.conf" do
+  source "nginx-nodejs.conf.erb"
+  owner "nginx"
+  group "nginx"
+  mode 0644
+  variables({
+                :apps => apps,
+                :serverName => serverName,
+                :accessLog => accessLog,
+                :root => root
+            })
+end
 
-  log "^^^^^^ Feb 5 14:16 application: #{application}, deploy[:application_type]: #{deploy[:application_type]}"
+link "/etc/nginx/sites-enabled/nginx-nodejs.conf" do
+  to "/etc/nginx/sites-available/nginx-nodejs.conf"
+  owner "nginx"
+  group "nginx"
+  not_if { ::File.exists("/etc/nginx/sites-enabled/nginx-nodejs.conf") }
+end
 
-  if deploy[:application_type] != 'rails' #|| node[:deploy][application][:rails_env] != 'production'
-    log("Skipping ce2-custom::init-db for application #{application} as it is not a Rails app")
-    next
-  end
+# restart nginx
+#execute "Start faye" do
+#  command "start faye"
+#  not_if("ps aux | grep faye/server-redis.js | grep -v grep | grep -v sudo")
+#end
 
-  template "#{node[:deploy][application][:deploy_to]}/shared/config/database.yml.custom" do
-    cookbook "rails"
-    source "nodejs-upstreams.erb"
-    mode "0660"
-    owner node[:deploy][application][:user]
-    group node[:deploy][application][:group]
-    variables(
-        :database => node[:deploy][application][:database],
-        :environment => node[:deploy][application][:rails_env]
-    )
-  end.run_action(:create)
+service 'nginx' do
+  supports :status => true, :restart => true, :reload => true
+  action :restart
 end
