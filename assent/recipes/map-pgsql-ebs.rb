@@ -24,6 +24,8 @@ if mount_point
 
   link "/var/lib/pgsql93" do
     to "#{mount_point}"
+    owner app_owner
+    group 'nobody'
     not_if { ::File.directory?("/var/lib/pgsql93") }
   end
 end
