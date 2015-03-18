@@ -9,8 +9,8 @@
 server {
   listen 80;
 
-  server_name <%= serverName %>;
-  access_log <%= accessLog %>;
+  server_name <%= @serverName %>;
+  access_log <%= @accessLog %>;
 
   keepalive_timeout 5;
 
