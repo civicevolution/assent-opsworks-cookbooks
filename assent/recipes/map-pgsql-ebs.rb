@@ -7,8 +7,8 @@ Chef::Log.info "Find mount_point  #{}"
 #mount_point = node['ebs']['devices']['/dev/xvdi']['mount_point'] rescue nil
 
 
-mount_point = node['deploy']['assent_prod']['database']['ebs-mount-point'] rescue nil
-app_owner = node['deploy']['owner'] rescue nil
+mount_point = node['deploy']['assent_prod']['database']['ebs_mount_point'] rescue nil
+app_owner = node['deploy']['assent_prod']['database']['username'] rescue nil
 
 Chef::Log.info "the mount_point IS   #{mount_point}"
 Chef::Log.info "app_owner  #{app_owner}"
