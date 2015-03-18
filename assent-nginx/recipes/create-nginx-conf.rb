@@ -1,6 +1,6 @@
 apps = [
-  { name: 'faye', port: 8001, keepalive: 32 },
-  { name: 'api', port: 9001, keepalive: 32 }
+  { name: 'faye', port: 8000, keepalive: 32 },
+  { name: 'api', port: 9002, keepalive: 32 }
 ]
 serverName = "getAssent.com getAssent"
 accessLog = "/var/log/nginx/getassent.log"
