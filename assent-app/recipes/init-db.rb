@@ -1,9 +1,9 @@
 node[:deploy].each do |application, deploy|
-  if deploy[:application_type] != 'rails'
+  if deploy[:application_type] != 'nodejs'
     next
   end
 
-  log "Initialize the rails database for #{application}"
+  log "Initialize the nodejs database for #{application}"
   username = node[:deploy][application][:database][:username]
   password = node[:deploy][application][:database][:password]
   #postgres_password = node['postgresql']['password']['postgres']
