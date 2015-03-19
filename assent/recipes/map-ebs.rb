@@ -12,6 +12,7 @@ node[:opsworks][:ebs].each do |ebs|
     to ebs[:mount_point]
     owner ebs[:mount_owner]
     group ebs[:mount_group]
+    mode 00770
     not_if { ::File.directory?(ebs[:link]) }
   end
 end
