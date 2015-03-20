@@ -8,7 +8,7 @@
 if node[:migrate_db]
   include_recipe "Assent::no-op-1"
 else
-  include_recipe "Assent::no-op-1"
+  include_recipe "Assent::no-op-2"
 end
 
 
