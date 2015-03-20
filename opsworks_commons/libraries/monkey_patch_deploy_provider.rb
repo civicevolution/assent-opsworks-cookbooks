@@ -34,6 +34,13 @@ class Chef
         Chef::Log.info "pp @new_resource:"
         pp @new_resource
 
+        Chef::Log.info "migrate: #{@new_resource.migrate}"
+        Chef::Log.info "name: #{@new_resource.name}"
+        Chef::Log.info "user: #{@new_resource.user}"
+        Chef::Log.info "current_path: #{@new_resource.current_path}"
+
+        Chef::Log.info "migrate_command: #{@new_resource.migrate_command}"
+
         #if @new_resource.migrate
         #  enforce_ownership
         #
