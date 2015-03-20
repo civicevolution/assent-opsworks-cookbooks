@@ -5,6 +5,13 @@
 
 #{"migrate_db": true}
 
+if node[:migrate_db]
+  include_recipe "Assent::no-op-1"
+else
+  include_recipe "Assent::no-op-1"
+end
+
+
 log "log: Should I do the migration node[:migrate_db]: #{node[:migrate_db]}"
 Chef::Log.info "CL: Should I do the migration node[:migrate_db]: #{node[:migrate_db]}"
 
@@ -18,6 +25,8 @@ node[:deploy].each do |application, deploy|
   log "Run the database migration"
   log "user: #{deploy[:user]}"
   log "current_path: #{deploy[:current_path]}"
+
+
 
 
 
