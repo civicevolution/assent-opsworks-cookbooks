@@ -28,36 +28,64 @@ class Chef
       def migrate
         run_symlinks_before_migrate
 
-        Chef::Log.info "\n\n%%%%% Assent migrate for nodejs Happens here  #{}\n"
-        Chef::Log.info "@new_resource.migrate  #{@new_resource.migrate}"
-        Chef::Log.info "@new_resource.environment  #{@new_resource.environment}"
-        Chef::Log.info "pp @new_resource:"
-        pp @new_resource
+        Chef::Log.info "\n\n%%%%% Assent migrate for nodejs Happens here, migrate flag #{@new_resource.migrate}\n"
 
-        Chef::Log.info "migrate: #{@new_resource.migrate}"
-        Chef::Log.info "name: #{@new_resource.name}"
-        Chef::Log.info "user: #{@new_resource.user}"
-        Chef::Log.info "current_path: #{@new_resource.current_path}"
+        # store variables for the ruby_block
+        name = @new_resource.name
+        stop_command = @new_resource.params[:deploy_data][:nodejs][:stop_command]
+        restart_command = @new_resource.params[:deploy_data][:nodejs][:restart_command]
+        user = @new_resource.user
+        current_path = @new_resource.current_path
+        migration_command = @new_resource.migration_command
 
-        Chef::Log.info "migrate_command: #{@new_resource.migrate_command}"
+        Chef::Log.info "name: #{name}"
+        Chef::Log.info "stop_command: #{stop_command}"
+        Chef::Log.info "restart_command: #{restart_command}"
+        Chef::Log.info "user: #{user}"
+        Chef::Log.info "current_path: #{current_path}"
+        Chef::Log.info "migration_command: #{migration_command}"
 
-        #if @new_resource.migrate
-        #  enforce_ownership
-        #
-        #  environment = @new_resource.environment
-        #  env_info = environment && environment.map do |key_and_val|
-        #    "#{key_and_val.first}='#{key_and_val.last}'"
-        #  end.join(" ")
-        #
-        #  converge_by("execute migration command #{@new_resource.migration_command}") do
-        #    if environment && environment.key?("SHOW_ENVIRONMENT_VARIABLES")
-        #      Chef::Log.info "#{@new_resource} migrating #{@new_resource.user} with environment #{env_info}"
-        #    else
-        #      Chef::Log.info "#{@new_resource} migrating #{@new_resource.user}"
-        #    end
-        #    run_command(run_options(:command => @new_resource.migration_command, :cwd=>release_path, :log_level => :info))
-        #  end
-        #end
+        ruby_block "stop node.js application #{@new_resource.name}" do
+          block do
+            puts "Stop nodejs before proceeding"
+            psAux1 = `ps aux | grep assent/current/server.js | grep -v NODE_PATH  | grep -v grep`
+            Chef::Log.info "ps for nodejs server.js, psAux1:  #{psAux1}"
+            nodeRunning = psAux1 =~ /server.js/
+
+            # actually stop the service here
+            Chef::Log.info("stop node.js via: #{stop_command}")
+            Chef::Log.info(`#{stop_command}`)
+            #$? == 0
+
+            # wait for the service to be stopped
+            loopCtr = 60
+            while nodeRunning && loopCtr > 0 do
+              loopCtr -= 1
+              puts Time.now
+              psAux1 = `ps aux | grep assent/current/server.js | grep -v NODE_PATH  | grep -v grep`
+              puts psAux1
+              nodeRunning = psAux1 =~ /server.js/
+              if !nodeRunning
+                break
+              end
+              sleep 0.05
+            end
+
+            if nodeRunning
+              raise Exception.new("nodejs wasn't stopped in a timely manner")
+            end
+
+            Chef::Log.info "nodejs has stopped, run the migration now by continuing to the next block"
+
+          end
+        end
+
+        execute "do-migration: #{migration_command}" do
+          cwd current_path
+          user user
+          command migration_command
+        end
+
       end
 
     end
