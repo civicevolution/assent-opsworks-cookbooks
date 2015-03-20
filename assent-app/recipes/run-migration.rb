@@ -1,16 +1,23 @@
+#sudo su deploy
+#deploy[:user]
+#cd /srv/www/assent/current
+#deploy[:current_path]
+
+#{"migrate_db": true}
+
+log "log: Should I do the migration node[:migrate_db]: #{node[:migrate_db]}"
+Chef::Log.info "CL: Should I do the migration node[:migrate_db]: #{node[:migrate_db]}"
+
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'nodejs'
     next
   end
 
-  log "Run the database migration for #{application}"
   Chef::Log.info "CL: Run the database migration for  #{application}"
 
-  Chef::Log.info "CL: pp deploy  #{ pp deploy}"
-  
-  Chef::Log.info "ok  #{}"
-
-  pp deploy
+  log "Run the database migration"
+  log "user: #{deploy[:user]}"
+  log "current_path: #{deploy[:current_path]}"
 
 
 
