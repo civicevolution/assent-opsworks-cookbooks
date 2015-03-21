@@ -37,20 +37,23 @@ class Chef
         user = @new_resource.user
         current_path = @new_resource.current_path
         migration_command = @new_resource.migration_command
+        appName = @new_resource.params[:deploy_data][:application]
+        psStr = "ps aux | grep #{appName}/current/server.js | grep -v NODE_PATH  | grep -v grep"
 
-        Chef::Log.info "name: #{name}"
-        Chef::Log.info "stop_command: #{stop_command}"
-        Chef::Log.info "restart_command: #{restart_command}"
-        Chef::Log.info "user: #{user}"
-        Chef::Log.info "current_path: #{current_path}"
-        Chef::Log.info "migration_command: #{migration_command}"
+        #Chef::Log.info "appName form resource is   #{appName}"
+        #Chef::Log.info "name: #{name}"
+        #Chef::Log.info "stop_command: #{stop_command}"
+        #Chef::Log.info "restart_command: #{restart_command}"
+        #Chef::Log.info "user: #{user}"
+        #Chef::Log.info "current_path: #{current_path}"
+        #Chef::Log.info "migration_command: #{migration_command}"
 
-        ruby_block "stop node.js application #{@new_resource.name}" do
+        ruby_block "stop node.js application #{appName}" do
           block do
-            puts "Stop nodejs before proceeding"
-            psAux1 = `ps aux | grep assent/current/server.js | grep -v NODE_PATH  | grep -v grep`
-            Chef::Log.info "ps for nodejs server.js, psAux1:  #{psAux1}"
-            nodeRunning = psAux1 =~ /server.js/
+            psAux = `#{psStr}`
+
+            Chef::Log.info "ps for nodejs server.js, psAux:  #{psAux}"
+            nodeRunning = psAux =~ /server.js/
 
             # actually stop the service here
             Chef::Log.info("stop node.js via: #{stop_command}")
@@ -62,9 +65,9 @@ class Chef
             while nodeRunning && loopCtr > 0 do
               loopCtr -= 1
               puts Time.now
-              psAux1 = `ps aux | grep assent/current/server.js | grep -v NODE_PATH  | grep -v grep`
-              puts psAux1
-              nodeRunning = psAux1 =~ /server.js/
+              psAux = `#{psStr}`
+              puts psAux
+              nodeRunning = psAux =~ /server.js/
               if !nodeRunning
                 break
               end
@@ -80,11 +83,11 @@ class Chef
           end
         end
 
-        execute "do-migration: #{migration_command}" do
-          cwd current_path
-          user user
-          command migration_command
-        end
+        #execute "do-migration: #{migration_command}" do
+        #  cwd current_path
+        #  user user
+        #  command migration_command
+        #end
 
       end
 
