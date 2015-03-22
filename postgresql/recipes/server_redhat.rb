@@ -43,6 +43,7 @@ directory dir do
   group "postgres"
   recursive true
   action :create
+  not_if { ::File.directory?(dir) }
 end
 
 node['postgresql']['server']['packages'].each do |pg_pack|
