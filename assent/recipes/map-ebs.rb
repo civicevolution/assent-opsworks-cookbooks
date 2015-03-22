@@ -1,18 +1,18 @@
 node[:opsworks][:ebs].each do |ebs|
-  Chef::Log.info "setup ebs mount for  #{ebs[:layer]} at #{ebs[:mount_point]} with link: #{ebs[:link]}"
-  directory "#{ebs[:mount_point]}#{ebs[:link]}" do
+  dir = "#{ebs[:mount_point]}#{ebs[:link]}"
+  Chef::Log.info "setup ebs mount for  #{ebs[:layer]} at mount_point #{ebs[:mount_point]} as dir: #{dir} with link: #{ebs[:link]}"
+  directory dir do
     owner ebs[:mount_owner]
     group ebs[:mount_group]
     mode 00770
     recursive true
-    not_if { ::File.directory?(ebs[:mount_point]) }
+    not_if { ::File.directory?( dir ) }
   end
 
   link ebs[:link] do
-    to "#{ebs[:mount_point]}#{ebs[:link]}"
+    to dir
     owner ebs[:mount_owner]
     group ebs[:mount_group]
-    #mode 00770
-    not_if { ::File.directory?(ebs[:link]) }
+    not_if { ::File.symlink?(ebs[:link]) }
   end
 end
