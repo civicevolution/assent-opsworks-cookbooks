@@ -73,7 +73,7 @@ node[:deploy].each do |application, deploy|
       #$? == 0
 
       # wait for the service to be stopped
-      loopCtr = 60
+      loopCtr = 200
       while nodeRunning && loopCtr > 0 do
         loopCtr -= 1
         puts Time.now

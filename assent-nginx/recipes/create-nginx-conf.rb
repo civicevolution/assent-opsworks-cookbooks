@@ -2,6 +2,11 @@ apps = [
   { name: 'faye', port: 8000, keepalive: 32 },
   { name: 'api', port: 9002, keepalive: 32 }
 ]
+
+Chef::Log.info "%%%% nginx needs actual data from custom json  #{}"
+Chef::Log.info "pp node[:deploy]:"
+pp node[:deploy]
+
 serverName = "getAssent.com getAssent"
 accessLog = "/var/log/nginx/getassent.log"
 rootPath = "/srv/www/getassent/current/public/"
