@@ -1,9 +1,17 @@
 node[:deploy].each do |application, deploy|
-  if deploy[:application_type] != 'nodejs'
+
+  #Chef::Log.info "\n\napplication:  #{application}\n\n"
+  #Chef::Log.info "\n\ndeploy[:application_type]: #{deploy[:application_type]}\n\n"
+  #
+  #Chef::Log.info "\n\ndeploy[:database]: #{pp deploy[:database]}\n\n"
+  #Chef::Log.info "\n\ndeploy[:database].nil?: #{ deploy[:database].nil?}\n\n"
+  #Chef::Log.info "\n\ndeploy[:database].empty?: #{ deploy[:database].empty?}\n\n"
+
+  if deploy[:application_type] != 'nodejs' || deploy[:database].nil? || deploy[:database].empty?
     next
   end
 
-  log "Initialize the nodejs database for #{application}"
+  Chef::Log.info "Initialize the nodejs database for #{application}"
   username = node[:deploy][application][:database][:username]
   password = node[:deploy][application][:database][:password]
   #postgres_password = node['postgresql']['password']['postgres']
@@ -14,11 +22,13 @@ node[:deploy].each do |application, deploy|
   execute "create-db-user-#{username}" do
     #command %{psql -U postgres postgres -c \"CREATE USER #{username} with ENCRYPTED PASSWORD '#{password}' CREATEDB NOCREATEUSER\"}
     command %{psql -U postgres postgres -c \"CREATE USER #{username} with PASSWORD '#{password}' CREATEDB NOCREATEUSER\"}
+    only_if username
     not_if %{psql -U postgres -c "select * from pg_roles" | grep #{username}}
   end
 
   execute "create database for #{db_name}" do
     command %{psql -U postgres -c \"CREATE DATABASE #{db_name} OWNER #{owner}\"}
+    only_if db_name
     not_if "#{statement} | grep #{db_name}"
   end
 
