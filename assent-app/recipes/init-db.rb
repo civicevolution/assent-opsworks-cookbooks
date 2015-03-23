@@ -1,11 +1,11 @@
 node[:deploy].each do |application, deploy|
 
-  Chef::Log.info "\n\napplication:  #{application}\n\n"
-  Chef::Log.info "\n\ndeploy[:application_type]: #{deploy[:application_type]}\n\n"
-
-  Chef::Log.info "\n\ndeploy[:database]: #{pp deploy[:database]}\n\n"
-  Chef::Log.info "\n\ndeploy[:database].nil?: #{ deploy[:database].nil?}\n\n"
-  Chef::Log.info "\n\ndeploy[:database].empty?: #{ deploy[:database].empty?}\n\n"
+  #Chef::Log.info "\n\napplication:  #{application}\n\n"
+  #Chef::Log.info "\n\ndeploy[:application_type]: #{deploy[:application_type]}\n\n"
+  #
+  #Chef::Log.info "\n\ndeploy[:database]: #{pp deploy[:database]}\n\n"
+  #Chef::Log.info "\n\ndeploy[:database].nil?: #{ deploy[:database].nil?}\n\n"
+  #Chef::Log.info "\n\ndeploy[:database].empty?: #{ deploy[:database].empty?}\n\n"
 
   if deploy[:application_type] != 'nodejs' || deploy[:database].nil? || deploy[:database].empty?
    Chef::Log.info "\n\n No database to set up for app: #{application} *************\n\n"
@@ -24,15 +24,17 @@ node[:deploy].each do |application, deploy|
   owner = username
 
   execute "create-db-user-#{username}" do
+    cwd "/tmp"
     #command %{psql -U postgres postgres -c \"CREATE USER #{username} with ENCRYPTED PASSWORD '#{password}' CREATEDB NOCREATEUSER\"}
     command %{psql -U postgres postgres -c \"CREATE USER #{username} with PASSWORD '#{password}' CREATEDB NOCREATEUSER\"}
-    only_if username
+    not_if username.nil?
     not_if %{psql -U postgres -c "select * from pg_roles" | grep #{username}}
   end
 
   execute "create database for #{db_name}" do
+    cwd "/tmp"
     command %{psql -U postgres -c \"CREATE DATABASE #{db_name} OWNER #{owner}\"}
-    only_if db_name
+    not_if db_name.nil?
     not_if "#{statement} | grep #{db_name}"
   end
 
@@ -44,4 +46,3 @@ node[:deploy].each do |application, deploy|
   #end
 
 end
-
