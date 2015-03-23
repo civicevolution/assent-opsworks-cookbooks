@@ -29,12 +29,15 @@ node[:deploy].each do |application, deploy|
     environment_variables deploy[:environment_variables]
   end
 
+  Chef::Log.info "\n\nBefore ruby_block, deploy[:nodejs][:knex_migrate]: #{deploy[:nodejs][:knex_migrate]}\n"
+
+
   ruby_block "Do migration for application #{application}" do
     block do
       Chef::Log.info "pp deploy:  #{}"
       pp deploy
 
-      Chef::Log.info "\n\n%%%%% Assent migrate for nodejs Happens here, migrate flag #{deploy[:migrate]}\n"
+      Chef::Log.info "\n\n%%%%% Assent migrate for nodejs Happens here, migrate flag (deploy[:nodejs][:knex_migrate]): #{deploy[:nodejs][:knex_migrate]}\n"
 
       # store variables for the ruby_block
       stop_command = deploy[:nodejs][:stop_command]
@@ -98,7 +101,7 @@ node[:deploy].each do |application, deploy|
       Chef::Log.info(`#{node[:deploy][application][:nodejs][:restart_command]}`)
       $? == 0
     end
-    only_if deploy[:nodejs][:migrate]
+    only_if deploy[:nodejs][:knex_migrate]
   end
 
   ruby_block "restart node.js application #{application}" do
