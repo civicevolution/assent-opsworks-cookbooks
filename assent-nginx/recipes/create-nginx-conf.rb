@@ -22,18 +22,19 @@ pp apps
 serverName = node[:nginx][:serverName]
 accessLog = node[:nginx][:accessLog]
 rootPath = node[:nginx][:rootPath]
+confFileName = "#{serverName.gsub(/\W/,'-')}.conf"
 
 Chef::Log.info "serverName  #{serverName}"
 Chef::Log.info "accessLog  #{accessLog}"
 Chef::Log.info "rootPath  #{rootPath}"
+Chef::Log.info "confFileName  #{confFileName}"
 
 # serverName = "getAssent.com getAssent"
 # accessLog = "/var/log/nginx/getassent.log"
 # rootPath = "/srv/www/getassent/current/public/"
 
-
 #template "/etc/nginx/sites-available/nginx-nodejs.conf" do
-template "/etc/nginx/sites-available/#{serverName.gsub(/\W/,'-')}.conf" do
+template "/etc/nginx/sites-available/#{confFileName}" do
   source "nginx-nodejs.conf.erb"
   owner "nginx"
   group "nginx"
@@ -46,12 +47,12 @@ template "/etc/nginx/sites-available/#{serverName.gsub(/\W/,'-')}.conf" do
             })
 end
 
-link "nginx-nodejs.conf" do
-  target_file "/etc/nginx/sites-enabled/nginx-nodejs.conf"
-  to          "/etc/nginx/sites-available/nginx-nodejs.conf"
+link "#{confFileName}" do
+  target_file "/etc/nginx/sites-enabled/#{confFileName}"
+  to          "/etc/nginx/sites-available/#{confFileName}"
   owner       "nginx"
   group       "nginx"
-  not_if { ::File.exists?("/etc/nginx/sites-enabled/nginx-nodejs.conf") }
+  not_if { ::File.exists?("/etc/nginx/sites-enabled/#{confFileName}") }
 end
 
 directory rootPath do
