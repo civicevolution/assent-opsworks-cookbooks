@@ -1,18 +1,39 @@
-apps = [
-  { name: 'faye', port: 8000, keepalive: 32 },
-  { name: 'api', port: 9002, keepalive: 32 }
-]
+#apps = [
+#  { mount_name: 'faye', port: 8000, keepalive: 32 },
+#  { mount_name: 'api', port: 9002, keepalive: 32 }
+#]
 
 Chef::Log.info "%%%% nginx needs actual data from custom json  #{}"
-Chef::Log.info "pp node[:deploy]:"
-pp node[:deploy]
-
-serverName = "getAssent.com getAssent"
-accessLog = "/var/log/nginx/getassent.log"
-rootPath = "/srv/www/getassent/current/public/"
+#Chef::Log.info "pp node[:deploy]:"
+#pp node[:deploy]
 
 
-template "/etc/nginx/sites-available/nginx-nodejs.conf" do
+
+apps = []
+node[:deploy].each do |application, deploy|
+  nodejs = deploy[:nodejs]
+  apps.push( { mount_name: nodejs[:mount_name], port: nodejs[:port], keepalive: nodejs[:keepalive] || 32 } )
+end
+
+Chef::Log.info "pp app:"
+pp apps
+
+
+serverName = node[:nginx][:serverName]
+accessLog = node[:nginx][:accessLog]
+rootPath = node[:nginx][:rootPath]
+
+Chef::Log.info "serverName  #{serverName}"
+Chef::Log.info "accessLog  #{accessLog}"
+Chef::Log.info "rootPath  #{rootPath}"
+
+# serverName = "getAssent.com getAssent"
+# accessLog = "/var/log/nginx/getassent.log"
+# rootPath = "/srv/www/getassent/current/public/"
+
+
+#template "/etc/nginx/sites-available/nginx-nodejs.conf" do
+template "/etc/nginx/sites-available/#{serverName.gsub(/\W/,'-')}.conf" do
   source "nginx-nodejs.conf.erb"
   owner "nginx"
   group "nginx"
