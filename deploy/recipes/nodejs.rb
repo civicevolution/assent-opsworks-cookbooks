@@ -29,13 +29,19 @@ node[:deploy].each do |application, deploy|
     environment_variables deploy[:environment_variables]
   end
 
-  Chef::Log.info "\n\nBefore ruby_block, deploy[:nodejs][:knex_migrate]: #{deploy[:nodejs][:knex_migrate]}\n"
+  #Chef::Log.info "\n\nBefore ruby_block, deploy[:nodejs][:knex_migrate]: #{deploy[:nodejs][:knex_migrate]}\n"
 
+  execute "do-migration-#{deploy[:application]}" do
+    cwd deploy[:current_path]
+    user deploy[:user]
+    command deploy[:nodejs][:migration_command]
+    action :nothing
+  end
 
   ruby_block "Do migration for application #{application}" do
     block do
-      Chef::Log.info "pp deploy:  #{}"
-      pp deploy
+      #Chef::Log.info "pp deploy:  #{}"
+      #pp deploy
 
       Chef::Log.info "\n\n%%%%% Assent migrate for nodejs Happens here, migrate flag (deploy[:nodejs][:knex_migrate]): #{deploy[:nodejs][:knex_migrate]}\n"
 
@@ -48,14 +54,13 @@ node[:deploy].each do |application, deploy|
       appName = deploy[:application]
       psStr = "ps aux | grep #{appName}/current/server.js | grep -v NODE_PATH  | grep -v grep"
 
-      Chef::Log.info "Inside migrate for appName #{appName}"
-      Chef::Log.info "stop_command: #{stop_command}"
-      Chef::Log.info "restart_command: #{restart_command}"
-      Chef::Log.info "user: #{user}"
-      Chef::Log.info "current_path: #{current_path}"
-      Chef::Log.info "migration_command: #{migration_command}"
-      Chef::Log.info "psStr: #{psStr}"
-
+      #Chef::Log.info "Inside migrate for appName #{appName}"
+      #Chef::Log.info "stop_command: #{stop_command}"
+      #Chef::Log.info "restart_command: #{restart_command}"
+      #Chef::Log.info "user: #{user}"
+      #Chef::Log.info "current_path: #{current_path}"
+      #Chef::Log.info "migration_command: #{migration_command}"
+      #Chef::Log.info "psStr: #{psStr}"
 
       psAux = `#{psStr}`
 
@@ -85,23 +90,15 @@ node[:deploy].each do |application, deploy|
         raise Exception.new("nodejs wasn't stopped in a timely manner")
       end
 
-      Chef::Log.info "nodejs has stopped, run the migration for '#{appName}' now by continuing to the next block"
+      Chef::Log.info "nodejs has stopped, run the migration for '#{appName}' now by calling notifies"
 
-      `cd #{current_path}`
-      `su #{user}`
-      `#{migration_command}`
-
-      execute "do-migration: #{migration_command}" do
-        cwd current_path
-        user user
-        command migration_command
-      end
+      notifies :run, resources(:execute => "do-migration-#{appName}"), :immediately
 
       Chef::Log.info("restart node.js via: #{node[:deploy][application][:nodejs][:restart_command]}")
       Chef::Log.info(`#{node[:deploy][application][:nodejs][:restart_command]}`)
       $? == 0
     end
-    only_if deploy[:nodejs][:knex_migrate]
+    only_if { deploy[:nodejs][:knex_migrate] }
   end
 
   ruby_block "restart node.js application #{application}" do
