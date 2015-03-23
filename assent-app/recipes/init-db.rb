@@ -1,6 +1,6 @@
 node[:deploy].each do |application, deploy|
 
-  #Chef::Log.info "\n\napplication:  #{application}\n\n"
+  Chef::Log.info "\n\n%%%% assent-app::init-db for application:  #{application}\n\n"
   #Chef::Log.info "\n\ndeploy[:application_type]: #{deploy[:application_type]}\n\n"
   #
   #Chef::Log.info "\n\ndeploy[:database]: #{pp deploy[:database]}\n\n"
