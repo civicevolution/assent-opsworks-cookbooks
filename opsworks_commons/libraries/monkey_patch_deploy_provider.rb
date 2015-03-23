@@ -42,7 +42,7 @@ class Chef
           appName = @new_resource.params[:deploy_data][:application]
           psStr = "ps aux | grep #{appName}/current/server.js | grep -v NODE_PATH  | grep -v grep"
 
-          #Chef::Log.info "appName form resource is   #{appName}"
+          Chef::Log.info "Inside migrate for appName #{appName}"
           #Chef::Log.info "name: #{name}"
           #Chef::Log.info "stop_command: #{stop_command}"
           #Chef::Log.info "restart_command: #{restart_command}"
@@ -80,7 +80,7 @@ class Chef
                 raise Exception.new("nodejs wasn't stopped in a timely manner")
               end
 
-              Chef::Log.info "nodejs has stopped, run the migration now by continuing to the next block"
+              Chef::Log.info "nodejs has stopped, run the migration for '#{appName}' now by continuing to the next block"
 
             end
           end
