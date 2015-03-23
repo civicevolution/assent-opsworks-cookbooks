@@ -4,8 +4,8 @@ Chef::Log.info("\n\n\nCustom deploy::default\n\n\n")
 
 node[:deploy].each do |application, deploy|
 
-  Chef::Log.info "\n\n$$$$$ pp deploy  #{}"
-  pp deploy
+  #Chef::Log.info "\n\n$$$$$ pp deploy  #{}"
+  #pp deploy
 
   opsworks_deploy_user do
 
