@@ -12,7 +12,12 @@ Chef::Log.info "%%%% nginx needs actual data from custom json  #{}"
 apps = []
 node[:deploy].each do |application, deploy|
   nodejs = deploy[:nodejs]
-  apps.push( { mount_name: nodejs[:mount_name], port: nodejs[:port], keepalive: nodejs[:keepalive] || 32 } )
+  apps.push( {
+    mount_name: nodejs[:mount_name],
+    port: nodejs[:port],
+    websockets: nodejs[:websockets],
+    keepalive: nodejs[:keepalive] || 32
+   });
 end
 
 Chef::Log.info "pp app:"
