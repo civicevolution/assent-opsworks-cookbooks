@@ -1,6 +1,6 @@
 set daemon 60
 set alert admin@getassent.com
-set mailserver <%= node[:monit][:mailserver][:host] %> <%= node[:monit][:mailserver][:port] %>
+set mailserver <%= node[:monit][:mailserver][:host] %> port <%= node[:monit][:mailserver][:port] %>
   username "<%= node[:monit][:mailserver][:username] %>"
   password "<%= node[:monit][:mailserver][:password] %>"
   using <%= node[:monit][:mailserver][:ssl] %>
