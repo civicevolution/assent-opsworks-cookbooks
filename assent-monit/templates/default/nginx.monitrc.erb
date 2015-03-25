@@ -4,6 +4,4 @@ check host nginx with address 127.0.0.1
   if failed port 80 protocol HTTP
     request /
     with timeout 10 seconds
-    then restart
-
-
+    then exec "/etc/init.d/nginx restart"
