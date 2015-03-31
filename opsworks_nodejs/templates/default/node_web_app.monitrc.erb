@@ -1,11 +1,11 @@
 <% if @deploy[:nodejs][:health_check] -%>
 check host node_web_app_<%= @application_name %>
   with address 127.0.0.1
-  start program = "/bin/bash -c 'cd <%= @deploy[:deploy_to] %>/current ; source <%= @deploy[:deploy_to] %>/shared/app.env ; /usr/bin/env PIDFILE=<%= @deploy[:deploy_to] %>/shared/pids/node_web_app_<%= @application_name %>.pid PORT=<%= @deploy[:nodejs][:port] %> <%= (@deploy[:nodejs][:environment_variables] || []).join(' ') %> NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current /usr/local/bin/node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'"
+  start program = "/bin/bash -c 'cd <%= @deploy[:deploy_to] %>/current ; source <%= @deploy[:deploy_to] %>/shared/app.env ; /usr/bin/env PIDFILE=<%= @deploy[:deploy_to] %>/shared/pids/node_web_app_<%= @application_name %>.pid PORT=<%= @deploy[:nodejs][:port] %> <%= (@deploy[:nodejs][:environment_variables] || []).join(' ') %> NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current /usr/local/bin/node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'" as uid "deploy" and gid "nobody"
   <% if @deploy[:nodejs][:node_flags] -%>
-  stop program = "/usr/bin/pkill -f 'node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'"
+  stop program = "/usr/bin/pkill -f 'node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'" as uid "deploy" and gid "nobody"
   <% else -%>
-  stop program = "/usr/bin/pkill -f 'node <%= @monitored_script %>'"
+  stop program = "/usr/bin/pkill -f 'node <%= @monitored_script %>'" as uid "deploy" and gid "nobody"
   <% end -%>
   <% if @deploy[:ssl_support] -%>
   if failed port <%= @deploy[:nodejs][:port] %> type TCPSSL protocol HTTP
@@ -18,11 +18,11 @@ check host node_web_app_<%= @application_name %>
 <% else -%>
 check process node_web_app_<%= @application_name %>
   with pidfile <%= @deploy[:deploy_to] %>/shared/pids/node_web_app_<%= @application_name %>.pid
-  start program = "/bin/bash -c 'cd <%= @deploy[:deploy_to] %>/current ; source <%= @deploy[:deploy_to] %>/shared/app.env ; /usr/bin/env PIDFILE=<%= @deploy[:deploy_to] %>/shared/pids/node_web_app_<%= @application_name %>.pid PORT=<%= @deploy[:nodejs][:port] %> <%= (@deploy[:nodejs][:environment_variables] || []).join(' ') %> NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current /usr/local/bin/node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'"
+  start program = "/bin/bash -c 'cd <%= @deploy[:deploy_to] %>/current ; source <%= @deploy[:deploy_to] %>/shared/app.env ; /usr/bin/env PIDFILE=<%= @deploy[:deploy_to] %>/shared/pids/node_web_app_<%= @application_name %>.pid PORT=<%= @deploy[:nodejs][:port] %> <%= (@deploy[:nodejs][:environment_variables] || []).join(' ') %> NODE_PATH=<%= @deploy[:deploy_to] %>/current/node_modules:<%= @deploy[:deploy_to] %>/current /usr/local/bin/node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'" as uid "deploy" and gid "nobody"
   <% if @deploy[:nodejs][:node_flags] -%>
-  stop program = "/usr/bin/pkill -f 'node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'"
+  stop program = "/usr/bin/pkill -f 'node <%= (@deploy[:nodejs][:node_flags] || []).join(' ') %> <%= @monitored_script %>'" as uid "deploy" and gid "nobody"
   <% else -%>
-  stop program = "/usr/bin/pkill -f 'node <%= @monitored_script %>'"
+  stop program = "/usr/bin/pkill -f 'node <%= @monitored_script %>'" as uid "deploy" and gid "nobody"
   <% end -%>
   if 2 restarts with 5 cycles then alert
 <% end -%>
