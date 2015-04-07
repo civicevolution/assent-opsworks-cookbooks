@@ -87,18 +87,18 @@ when "fedora"
 
 when "amazon"
 
-  if node['platform_version'].to_f >= 2012.03
-    default['postgresql']['version'] = "9.3"
-    default['postgresql']['dir'] = "/var/lib/pgsql93/data"
+  if node['platform_version'].to_f >= 2014.09
+    default['postgresql']['version'] = "9.4"
+    default['postgresql']['dir'] = "/var/lib/pgsql94/data"
   else
     default['postgresql']['version'] = "8.4"
     default['postgresql']['dir'] = "/var/lib/pgsql/data"
   end
 
-  default['postgresql']['client']['packages'] = %w{postgresql93-devel}
-  default['postgresql']['server']['packages'] = %w{postgresql93-server}
-  default['postgresql']['contrib']['packages'] = %w{postgresql93-contrib}
-  default['postgresql']['server']['service_name'] = "postgresql93"
+  default['postgresql']['client']['packages'] = %w{postgresql94-devel}
+  default['postgresql']['server']['packages'] = %w{postgresql94-server}
+  default['postgresql']['contrib']['packages'] = %w{postgresql94-contrib}
+  default['postgresql']['server']['service_name'] = "postgresql94"
 
 when "redhat", "centos", "scientific", "oracle"
 
@@ -235,6 +235,14 @@ default['postgresql']['initdb_locale'] = nil
 #   node['platform_version']             e.g., "5.7", truncated as "5"
 #   node['kernel']['machine']            e.g., "i386" or "x86_64"
 default['postgresql']['pgdg']['repo_rpm_url'] = {
+
+  "9.4" => {
+    "amazon" => {
+      "2014" => {
+        "x86_64" => "http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
+      }
+    }
+  },
   "9.3" => {
     "amazon" => {
       "2014" => {
