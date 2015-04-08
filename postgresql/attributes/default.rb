@@ -215,7 +215,8 @@ when 'rhel', 'fedora', 'suse'
   default['postgresql']['config']['default_text_search_config'] = 'pg_catalog.english'
 end
 
-default['postgresql']['config']['unix_socket_directories'] = '/var/run/postgresql'
+default['postgresql']['config']['unix_socket_directories'] = '/tmp'
+# default['postgresql']['config']['unix_socket_directories'] = '/var/run/postgresql'
 default['postgresql']['config']['unix_socket_directory'] = nil
 
 default['postgresql']['pg_hba'] = [

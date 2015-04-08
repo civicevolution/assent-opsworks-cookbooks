@@ -46,6 +46,14 @@ directory dir do
   not_if { ::File.directory?(dir) }
 end
 
+directory "/var/run/postgresql" do
+  owner "postgres"
+  group "postgres"
+  recursive true
+  action :create
+  not_if { ::File.directory?(dir) }
+end
+
 node['postgresql']['server']['packages'].each do |pg_pack|
 
   package pg_pack
