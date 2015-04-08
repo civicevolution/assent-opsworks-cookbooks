@@ -87,18 +87,18 @@ when "fedora"
 
 when "amazon"
 
-  if node['platform_version'].to_f >= 2014.09
-    default['postgresql']['version'] = "9.4"
-    default['postgresql']['dir'] = "/var/lib/pgsql94/data"
+  if node['platform_version'].to_f >= 2012.03
+    default['postgresql']['version'] = "9.3"
+    default['postgresql']['dir'] = "/var/lib/pgsql93/data"
   else
     default['postgresql']['version'] = "8.4"
     default['postgresql']['dir'] = "/var/lib/pgsql/data"
   end
 
-  default['postgresql']['client']['packages'] = %w{postgresql94-devel}
-  default['postgresql']['server']['packages'] = %w{postgresql94-server}
-  default['postgresql']['contrib']['packages'] = %w{postgresql94-contrib}
-  default['postgresql']['server']['service_name'] = "postgresql94"
+  default['postgresql']['client']['packages'] = %w{postgresql93-devel}
+  default['postgresql']['server']['packages'] = %w{postgresql93-server}
+  default['postgresql']['contrib']['packages'] = %w{postgresql93-contrib}
+  default['postgresql']['server']['service_name'] = "postgresql93"
 
 when "redhat", "centos", "scientific", "oracle"
 
@@ -218,7 +218,7 @@ when 'debian'
 end
 
 # Make sure I access from the postgres repository
-default['postgresql']['enable_pgdg_yum'] = true
+default['postgresql']['enable_pgdg_yum'] = false
 
 default['postgresql']['initdb_locale'] = nil
 
