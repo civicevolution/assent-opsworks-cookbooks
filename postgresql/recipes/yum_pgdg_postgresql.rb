@@ -31,10 +31,10 @@
 
 
 
-Chef::Log.warn "\nnode['postgresql']['version']#{node['postgresql']['version']}"
-Chef::Log.warn "\nnode['platform']#{node['platform']}"
-Chef::Log.warn "\nnode['platform_version'].to_f.to_i.to_s#{node['platform_version'].to_f.to_i.to_s}"
-Chef::Log.warn "\nnode['kernel']['machine']#{node['kernel']['machine']}"
+Chef::Log.warn "\nnode['postgresql']['version']: #{node['postgresql']['version']}"
+Chef::Log.warn "\nnode['platform']: #{node['platform']}"
+Chef::Log.warn "\nnode['platform_version'].to_f.to_i.to_s: #{node['platform_version'].to_f.to_i.to_s}"
+Chef::Log.warn "\nnode['kernel']['machine']: #{node['kernel']['machine']}"
 
 
 repo_rpm_url, repo_rpm_filename, repo_rpm_package = pgdgrepo_rpm_info
@@ -60,3 +60,9 @@ package repo_rpm_package do
   source "#{Chef::Config[:file_cache_path]}/#{repo_rpm_filename}"
   action :install
 end
+
+#repo_rpm_package: pgdg-redhat94
+execute "Enable the repo after it is installed" do
+  command "yum-config-manager --enable pgdg-94-redhat.repo"
+end
+
