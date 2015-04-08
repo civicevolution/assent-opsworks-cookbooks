@@ -63,6 +63,6 @@ end
 
 #repo_rpm_package: pgdg-redhat94
 execute "Enable the repo after it is installed" do
-  command "yum-config-manager --enable pgdg-94-redhat.repo"
+  command "yum-config-manager --enable pgdg\*"
 end
 
