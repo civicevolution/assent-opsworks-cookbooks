@@ -66,3 +66,8 @@ execute "Enable the repo after it is installed" do
   command "yum-config-manager --enable pgdg\*"
 end
 
+#repo_rpm_package: pgdg-redhat94
+execute "Replace $releasever in PGDG repo" do
+  cwd  "/etc/yum.repos.d"
+  command "sed -i -- 's/\$releasever/7/g' pgdg*"
+end
