@@ -223,7 +223,7 @@ default['postgresql']['enable_pgdg_yum'] = false
 # Make sure I access from the postgres repository
 default['postgresql']['enable_pgdg_yum'] = true
 default['postgresql']['version'] = "9.4"
-default['postgresql']['dir'] = "/var/lib/pgsql94/data"
+default['postgresql']['dir'] = "/var/lib/pgsql/9.4/data"
 default['postgresql']['client']['packages'] = ["postgresql94", "postgresql94-devel"]
 default['postgresql']['server']['packages'] = ["postgresql94-server"]
 default['postgresql']['server']['service_name'] = "postgresql-9.4"
