@@ -217,8 +217,23 @@ when 'debian'
   default['postgresql']['pgdg']['release_apt_codename'] = node['lsb']['codename']
 end
 
-# Make sure I access from the postgres repository
 default['postgresql']['enable_pgdg_yum'] = false
+
+# Force my desired version
+# Make sure I access from the postgres repository
+default['postgresql']['enable_pgdg_yum'] = true
+default['postgresql']['version'] = "9.4"
+default['postgresql']['dir'] = "/var/lib/pgsql94/data"
+default['postgresql']['client']['packages'] = ["postgresql94", "postgresql94-devel"]
+default['postgresql']['server']['packages'] = ["postgresql94-server"]
+default['postgresql']['server']['service_name'] = "postgresql94"
+default['postgresql']['contrib']['packages'] = ["postgresql94-contrib"]
+# Set attributes to pick up recent PGDG repo packages.
+default['postgresql']['pgdg']['repo_rpm_url'] = "http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
+
+
+
+
 
 default['postgresql']['initdb_locale'] = nil
 
@@ -236,10 +251,9 @@ default['postgresql']['initdb_locale'] = nil
 #   node['platform_version']             e.g., "5.7", truncated as "5"
 #   node['kernel']['machine']            e.g., "i386" or "x86_64"
 default['postgresql']['pgdg']['repo_rpm_url'] = {
-
   "9.4" => {
     "amazon" => {
-      "2014" => {
+      "2015" => {
         "i386" =>   "http://yum.postgresql.org/9.4/redhat/rhel-6-i386/pgdg-redhat94-9.4-1.noarch.rpm",
         "x86_64" => "http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
       }
@@ -247,7 +261,7 @@ default['postgresql']['pgdg']['repo_rpm_url'] = {
   },
   "9.3" => {
     "amazon" => {
-      "2014" => {
+      "2015" => {
         "i386" => "http://yum.postgresql.org/9.3/redhat/rhel-6-i386/pgdg-redhat93-9.3-1.noarch.rpm",
         "x86_64" => "http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm"
       },
