@@ -149,6 +149,21 @@ else
   default['postgresql']['server']['service_name'] = "postgresql"
 end
 
+
+# Force my desired version
+default['postgresql']['version'] = "9.4"
+default['postgresql']['dir'] = "/var/lib/pgsql/9.4/data"
+
+# default['postgresql']['client']['packages'] = ["postgresql94", "postgresql94-devel"]
+default['postgresql']['client']['packages'] = ["postgresql94-devel"]
+default['postgresql']['server']['packages'] = ["postgresql94-server"]
+default['postgresql']['contrib']['packages'] = ["postgresql94-contrib"]
+default['postgresql']['server']['service_name'] = "postgresql-9.4"
+
+# Set attributes to pick up recent PGDG repo packages.
+default['postgresql']['pgdg']['repo_rpm_url'] = "http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
+
+
 # These defaults have disparity between which postgresql configuration
 # settings are used because they were extracted from the original
 # configuration files that are now removed in favor of dynamic
@@ -217,19 +232,8 @@ when 'debian'
   default['postgresql']['pgdg']['release_apt_codename'] = node['lsb']['codename']
 end
 
-default['postgresql']['enable_pgdg_yum'] = false
-
-# Force my desired version
 # Make sure I access from the postgres repository
 default['postgresql']['enable_pgdg_yum'] = true
-default['postgresql']['version'] = "9.4"
-default['postgresql']['dir'] = "/var/lib/pgsql/9.4/data"
-default['postgresql']['client']['packages'] = ["postgresql94", "postgresql94-devel"]
-default['postgresql']['server']['packages'] = ["postgresql94-server"]
-default['postgresql']['server']['service_name'] = "postgresql-9.4"
-default['postgresql']['contrib']['packages'] = ["postgresql94-contrib"]
-# Set attributes to pick up recent PGDG repo packages.
-default['postgresql']['pgdg']['repo_rpm_url'] = "http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
 
 default['postgresql']['initdb_locale'] = nil
 
