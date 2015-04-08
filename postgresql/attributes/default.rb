@@ -229,8 +229,7 @@ default['postgresql']['server']['packages'] = ["postgresql94-server"]
 default['postgresql']['server']['service_name'] = "postgresql-9.4"
 default['postgresql']['contrib']['packages'] = ["postgresql94-contrib"]
 # Set attributes to pick up recent PGDG repo packages.
-default['postgresql']['pgdg']['repo_rpm_url'] = "http://yum.postgresql.org/9.4/redhat/rhel-7-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
-
+default['postgresql']['pgdg']['repo_rpm_url'] = "http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
 
 default['postgresql']['initdb_locale'] = nil
 

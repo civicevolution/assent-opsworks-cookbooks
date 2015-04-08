@@ -15,15 +15,15 @@
 # limitations under the License.
 #
 
-Chef::Log.warn "\n\n\n %%%%%%%%%%%%% pp node\n\n"
-pp node['postgresql']
-
-Chef::Log.warn "\n\n\n %%%%%%%%%%%%% pp node.default['postgresql']\n\n"
-pp node.default['postgresql']
-
-Chef::Log.warn "\nnode['platform']: #{node['platform']}"
-Chef::Log.warn "\nnode['platform_version'].to_f: #{node['platform_version'].to_f}"
-Chef::Log.warn "\nnode['platform_family']: #{node['platform_family']}"
+#Chef::Log.warn "\n\n\n %%%%%%%%%%%%% pp node\n\n"
+#pp node['postgresql']
+#
+#Chef::Log.warn "\n\n\n %%%%%%%%%%%%% pp node.default['postgresql']\n\n"
+#pp node.default['postgresql']
+#
+#Chef::Log.warn "\nnode['platform']: #{node['platform']}"
+#Chef::Log.warn "\nnode['platform_version'].to_f: #{node['platform_version'].to_f}"
+#Chef::Log.warn "\nnode['platform_family']: #{node['platform_family']}"
 
 if platform_family?('debian') && node['postgresql']['version'].to_f > 9.3
   node.default['postgresql']['enable_pgdg_apt'] = true
