@@ -17,6 +17,10 @@ server {
   root <%= @rootPath %>;
   index index.html;
 
+  location /app {
+    index app.html;
+  }
+
   <% @apps.each do |app| -%>
     location /<%= app[:mount_name]%> {
       proxy_redirect off;
