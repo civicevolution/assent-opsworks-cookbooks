@@ -68,12 +68,13 @@ directory rootPath do
   not_if { ::File.directory?(rootPath) }
 end
 
-template "/srv/www/getassent/current/public/index.html" do
-  source "index.html.erb"
-  owner "nginx"
-  group "nginx"
-  mode 0644
-end
+# Use the home.html from the application
+# template "/srv/www/getassent/current/public/index.html" do
+#   source "index.html.erb"
+#   owner "nginx"
+#   group "nginx"
+#   mode 0644
+# end
 
 
 # restart nginx
