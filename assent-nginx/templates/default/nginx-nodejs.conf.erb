@@ -17,8 +17,8 @@ server {
   root <%= @rootPath %>;
   index index.html;
 
-  location /app {
-    index app.html;
+  location / {
+    try_files $uri $uri/ /app.html;
   }
 
   <% @apps.each do |app| -%>
