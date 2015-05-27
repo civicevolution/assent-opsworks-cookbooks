@@ -7,7 +7,7 @@ node[:deploy].each do |application, deploy|
   #Chef::Log.info "\n\ndeploy[:database].nil?: #{ deploy[:database].nil?}\n\n"
   #Chef::Log.info "\n\ndeploy[:database].empty?: #{ deploy[:database].empty?}\n\n"
 
-  if deploy[:application_type] != 'nodejs' || deploy[:database].nil? || deploy[:database].empty?
+  if deploy[:application_type] != 'nodejs' || deploy[:database].nil? || deploy[:database].empty?  || application == 'faye_server'
    Chef::Log.info "\n\n No database to set up for app: #{application} *************\n\n"
     next
   end
