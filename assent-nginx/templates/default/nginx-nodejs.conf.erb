@@ -18,6 +18,9 @@ server {
   index index.html;
 
   location / {
+    if ($http_x_forwarded_proto != 'https') {
+      rewrite ^ https://$host$request_uri? permanent;
+    }
     try_files $uri $uri/ /app.html;
   }
 
