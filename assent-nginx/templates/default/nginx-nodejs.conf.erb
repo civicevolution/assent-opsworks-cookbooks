@@ -8,17 +8,21 @@
 # the nginx server instance
 server {
   listen 80;
+  listen              443 ssl;
+  ssl_certificate     nginx.crt;
+  ssl_certificate_key nginx.key;
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
   server_name <%= @serverName %>;
   access_log <%= @accessLog %>;
 
-  keepalive_timeout 5;
+  keepalive_timeout <%= @keepaliveTimeout %>;
 
   root <%= @rootPath %>;
   index index.html;
 
   location / {
-    if ($http_x_forwarded_proto != 'https') {
+    if ($http_x_forwarded_proto = 'http') {
       rewrite ^ https://$host$request_uri? permanent;
     }
     try_files $uri $uri/ /app.html;

@@ -16,7 +16,8 @@ node[:deploy].each do |application, deploy|
     mount_name: nodejs[:mount_name],
     port: nodejs[:port],
     websockets: nodejs[:websockets],
-    keepalive: nodejs[:keepalive] || 32
+    keepalive: nodejs[:keepalive] || 32,
+    keepaliveTimeout: nodejs[:keepaliveTime] || 75
    });
 end
 
