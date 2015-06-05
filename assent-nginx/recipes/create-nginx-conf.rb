@@ -16,8 +16,7 @@ node[:deploy].each do |application, deploy|
     mount_name: nodejs[:mount_name],
     port: nodejs[:port],
     websockets: nodejs[:websockets],
-    keepalive: nodejs[:keepalive] || 32,
-    keepaliveTimeout: nodejs[:keepaliveTime] || 75
+    keepalive: nodejs[:keepalive] || 32
    });
 end
 
@@ -29,6 +28,7 @@ serverName = node[:nginx][:serverName]
 accessLog = node[:nginx][:accessLog]
 rootPath = node[:nginx][:rootPath]
 confFileName = "#{serverName.gsub(/\W/,'-')}.conf"
+keepaliveTimeout = node[:nginx][:keepaliveTimeout] || 75
 
 Chef::Log.info "serverName  #{serverName}"
 Chef::Log.info "accessLog  #{accessLog}"
@@ -49,7 +49,8 @@ template "/etc/nginx/sites-available/#{confFileName}" do
                 :apps => apps,
                 :serverName => serverName,
                 :accessLog => accessLog,
-                :rootPath => rootPath
+                :rootPath => rootPath,
+                :keepaliveTimeout => keepaliveTimeout
             })
 end
 
