@@ -5,9 +5,17 @@
   }
 <% end -%>
 
-# the nginx server instance
+# for direct connection to nginx force all http to https
+# if ELB, use a single server block for 80 & 443
+# and redirect to https on $http_x_forwarded_proto = 'http'
 server {
   listen 80;
+  rewrite ^ https://$host$request_uri? permanent;
+}
+
+# the nginx server instance
+server {
+  #listen 80;
   listen              443 ssl;
   ssl_certificate     nginx.crt;
   ssl_certificate_key nginx.key;
@@ -22,9 +30,9 @@ server {
   index index.html;
 
   location / {
-    if ($http_x_forwarded_proto = 'http') {
-      rewrite ^ https://$host$request_uri? permanent;
-    }
+    #if ($http_x_forwarded_proto = 'http') {
+    #  rewrite ^ https://$host$request_uri? permanent;
+    #}
     try_files $uri $uri/ /app.html;
   }
 
