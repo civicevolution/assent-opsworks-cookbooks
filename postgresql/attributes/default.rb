@@ -158,7 +158,7 @@ default['postgresql']['dir'] = "/var/lib/pgsql/9.4/data"
 default['postgresql']['client']['packages'] = ["postgresql94-devel"]
 default['postgresql']['server']['packages'] = ["postgresql94-server"]
 default['postgresql']['contrib']['packages'] = ["postgresql94-contrib"]
-default['postgresql']['server']['service_name'] = "postgresql-9.4"
+default['postgresql']['server']['service_name'] = "postgresql94"
 
 # Set attributes to pick up recent PGDG repo packages.
 default['postgresql']['pgdg']['repo_rpm_url'] = "http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm"
